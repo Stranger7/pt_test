@@ -12,9 +12,9 @@ Installation
 - Скачать и распаковать.
 - Внести изменения в конфигурационный файл `app/config/config.ini` в секцию `[db:pttt_sg]` (задать пароль).
 - Создать БД:
-  `php console/crystal.php app\cli\db_create admin=mysql_admin_name password=****`
+  `php console/crystal.php app\cli\db create admin=mysql_admin_name password=****`
 - Применить фикстуры:
-  `php console/crystal.php app\cli\fixtures apply`
+  `php console/crystal.php app\cli\db fixtures`
 - Создать админа:
   `php console/crystal.php app\cli\admin create username=email password=****`
 - Настроить веб-сервер на папку: `site/`
