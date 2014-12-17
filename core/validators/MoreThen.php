@@ -7,27 +7,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Date: 07.10.2014
- * Time: 0:07
+ * Date: 17.12.2014
+ * Time: 1:33
  */
-
 
 namespace core\validators;
 
 use core\generic\Validator;
 
-/**
- * Class isEmail
- * @package core\validators
- */
-class IsEmail extends Validator
+class MoreThen extends Validator
 {
+    /**
+     * @var mixed
+     */
+    protected $min;
+
+    /**
+     * @param mixed $min
+     */
+    public function __construct($min)
+    {
+        parent::__construct();
+        $this->min = $min;
+    }
+
     /**
      * @return bool
      */
     public function isValid()
     {
-        return filter_var($this->property->get(), FILTER_VALIDATE_EMAIL);
+        return ($this->property->get() > $this->min);
     }
 
     /**
@@ -35,6 +44,6 @@ class IsEmail extends Validator
      */
     public function getMessage()
     {
-        return $this->property->get() . ' is not valid E-mail';
+        return $this->property->name() . " less then {$this->min} or equal";
     }
-} 
+}
