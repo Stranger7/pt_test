@@ -46,7 +46,7 @@ abstract class DbDriver
     abstract public function connect();
 
     /**
-     * @return resource
+     * @return resource|\MySQLi
      */
     protected function getConn()
     {
@@ -152,6 +152,18 @@ abstract class DbDriver
         $where = key($id) . ' = ' . $this->escape(current($id));
         $sql = 'SELECT ' . $select . ' FROM ' . $table_name . ' WHERE ' . $where;
         return $this->doQuery($sql)->row();
+    }
+
+    /**
+     * Deletes all rows from specified table
+     * @param $table_name
+     * @return bool
+     */
+    public function clearTable($table_name)
+    {
+        $this->checkTableName($table_name, 'clearTable');
+        $sql = 'DELETE' . ' FROM ' . $table_name;
+        return $this->doQuery($sql) ? true : false;
     }
 
     /**
