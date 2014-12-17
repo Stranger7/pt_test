@@ -48,7 +48,7 @@ class IsUnique extends Validator
         return (!$this->db->getEntry(
             $this->table_name,
             [$this->property->name() => $this->property->preparedForDb()]
-        )->row());
+        ));
     }
 
     /**
@@ -56,6 +56,6 @@ class IsUnique extends Validator
      */
     public function getMessage()
     {
-        return $this->property->get() . ' is not unique';
+        return "value '{$this->property->get()}' is not unique for field `{$this->property->name()}`";
     }
 }
