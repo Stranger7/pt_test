@@ -22,7 +22,7 @@ Installation
   ```
   php console/crystal.php app\cli\admin create username=email password=****
   ```
-- Настроить веб-сервер на папку
+- Настроить веб-сервер на папку:
   ```
   site/
   ```
