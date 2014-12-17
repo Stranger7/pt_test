@@ -4,25 +4,34 @@ pt_test
 
 Requirements
 ------------ 
-- PHP 5.5
-- MySQL
++ PHP 5.5
++ MySQL
 
 Installation
 ------------
-- Скачать и распаковать.
-- Создать БД:
-  ```
-  php console/crystal.php app\cli\db_create 
-  ```
-- Применить фикстуры:
-  ```
-  php console/crystal.php app\cli\fixtures apply 
-  ```
-- Создать админа:
-  ```
-  php console/crystal.php app\cli\admin create username=email password=****
-  ```
-- Настроить веб-сервер на папку:
-  ```
-  site/
-  ```
++ Скачать архив и распаковать.
++ В конфигурационном файле `app/config/cli_config.ini` в секции `[db:pttt_sg]` указать пароль (пункт `password`)
+  для администратора базы данных, которая будет создана на следующем шаге.
++ Создать БД:
+
+  `php console/crystal.php app\cli\db create my_root=name password=****`
+  
+  Скрипт по созданию базы подключится к серверу MySQL под пользователем `my_root`, который должен иметь права
+  на создание баз данных. Пароль для него передается параметром `password`. В случае успешного подключения будет
+  создана база данных `pttt_sg`, а также пользователь `pttt_sg` с паролем, который был указан в конфигурационном
+  файле (см.пред.шаг). Данному пользователю будут назначены администраторские права на созданную базу данных.
+  
+  *Примечание:* Механизм миграций пока не реализован, но скоро появится.
+
++ Применить фикстуры:
+
+  `php console/crystal.php app\cli\db fixtures`
+
++ Создать пользователя с ролью администратора:
+
+  `php console/crystal.php app\cli\admin create username=email password=****`
+  
++ Настроить веб-сервер на папку: `site/`
++ В конфигурационном файле `app/config/web_config.ini` в секции `[db:pttt_sg]` указать пароль (пункт `password`).
+  Пароль должен совпадать с паролем, указанным для CLI-приложений (см. `app/config/cli_config.ini` в секции
+  `[db:pttt_sg]` пункт `password`).
