@@ -7,8 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Date: 04.10.2014
- * Time: 11:04
+ * Date: 17.12.2014
+ * Time: 2:19
  */
 
 namespace core\property_types;
@@ -16,19 +16,19 @@ namespace core\property_types;
 use core\generic\Property;
 
 /**
- * Class String
+ * Class DateTime
  * @package core\property_types
  */
-class String extends Property
+class DateTime extends Property
 {
-    public function asString($format = self::NOT_INITIALIZED)
+    public function asString($format = 'd.m.Y H:i:s')
     {
-        return $this->value;
+        return date($format, $this->value);
     }
 
     public function preparedForDb()
     {
-        return $this->value;
+        return date('Y-m-d H:i:s', $this->value);
     }
 
     public function isEmpty()
@@ -39,10 +39,14 @@ class String extends Property
     /**
      * Converts to int
      * @param mixed $value
-     * @return string
+     * @return int|null
      */
     protected function cast($value)
     {
-        return strval($value);
+        if (empty($value))
+        {
+            return self::NOT_INITIALIZED;
+        }
+        return is_numeric($value) ? intval($value) : strtotime($value);
     }
 }
