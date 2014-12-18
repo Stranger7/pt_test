@@ -11,6 +11,37 @@ Requirements
 Installation
 ------------
 + Скачать архив и распаковать.
+  Структура каталогов:
+```
+  ├───app
+  │   ├───cli
+  │   ├───config
+  │   ├───extensions
+  │   ├───models
+  │   ├───views
+  │   │   ├───auth
+  │   │   ├───common
+  │   │   ├───main
+  │   │   ├───product
+  │   │   └───purchase
+  │   └───web
+  ├───console
+  ├───core
+  │   ├───actuators
+  │   ├───db_drivers
+  │   │   └───query_results
+  │   ├───exceptions
+  │   ├───generic
+  │   ├───loggers
+  │   ├───property_types
+  │   ├───session_drivers
+  │   └───validators
+  ├───logs
+  └───site
+      ├───css
+      │   └───images
+      └───js
+```
 + В конфигурационном файле `app/config/cli_config.ini` в секции `[db:pttt_sg]` указать пароль (пункт `password`)
   для администратора базы данных, которая будет создана на следующем шаге.
 + Создать БД:
