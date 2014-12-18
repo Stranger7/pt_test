@@ -143,7 +143,7 @@ abstract class DbDriver
      * @param string $table_name
      * @param array $id
      * @param string $select
-     * @return bool|\core\db_drivers\query_results\QueryResult
+     * @return bool|object
      */
     public function getEntry($table_name, $id, $select = '*')
     {
@@ -152,6 +152,28 @@ abstract class DbDriver
         $where = key($id) . ' = ' . $this->escape(current($id));
         $sql = 'SELECT ' . $select . ' FROM ' . $table_name . ' WHERE ' . $where;
         return $this->doQuery($sql)->row();
+    }
+
+    /**
+     * Returns list of entries from specified table
+     *
+     * @param $table_name
+     * @param string $order_by
+     * @param int $limit
+     * @param int $offset
+     * @return mixed|\core\db_drivers\query_results\QueryResult
+     */
+    public function entries($table_name, $order_by = '', $limit = 0, $offset = 0)
+    {
+        $this->checkTableName($table_name, 'entries');
+        $sql = 'SELECT ' . '*' . ' FROM ' . $table_name;
+        if (!empty($order_by)) {
+            $sql .= ' ORDER BY ' . $order_by;
+        }
+        if (!empty($offset)) {
+            $sql .= ' LIMIT '. $limit . ' OFFSET ' . $offset;
+        }
+        return $this->doQuery($sql);
     }
 
     /**
