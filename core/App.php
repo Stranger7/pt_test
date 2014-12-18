@@ -113,11 +113,14 @@ class App
                 'file' => $e->getFile(),
                 'line' => $e->getLine()
             ];
-            if (!Utils::isCLI() && (self::router()->controller() instanceof WebController))
+            if (!Utils::isCLI())
             {
                 /** @var WebController $controller */
-                $controller = self::router()->controller();
-                $controller->http()->header($e->getCode());
+                if (self::router() && ($controller = self::router()->controller())) {
+                    $controller->http()->header($e->getCode());
+                } else {
+                    (new Http())->header($e->getCode());
+                }
                 echo $buffer;
                 self::showError($error);
             } else {
