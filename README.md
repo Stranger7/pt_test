@@ -6,10 +6,42 @@ Requirements
 ------------ 
 + PHP 5.5
 + MySQL
++ Если используется web-сервер Apache, то необходимо подключение `mod_rewrite`
 
 Installation
 ------------
 + Скачать архив и распаковать.
+  Структура каталогов:
+```
+  ├───app
+  │   ├───cli
+  │   ├───config
+  │   ├───extensions
+  │   ├───models
+  │   ├───views
+  │   │   ├───auth
+  │   │   ├───common
+  │   │   ├───main
+  │   │   ├───product
+  │   │   └───purchase
+  │   └───web
+  ├───console
+  ├───core
+  │   ├───actuators
+  │   ├───db_drivers
+  │   │   └───query_results
+  │   ├───exceptions
+  │   ├───generic
+  │   ├───loggers
+  │   ├───property_types
+  │   ├───session_drivers
+  │   └───validators
+  ├───logs
+  └───site
+      ├───css
+      │   └───images
+      └───js
+```
 + В конфигурационном файле `app/config/cli_config.ini` в секции `[db:pttt_sg]` указать пароль (пункт `password`)
   для администратора базы данных, которая будет создана на следующем шаге.
 + Создать БД:
@@ -31,7 +63,12 @@ Installation
 
   `php console/crystal.php app\cli\admin create username=email password=****`
   
-+ Настроить веб-сервер на папку: `site/`
++ Настроить веб-сервер на папку: `site/` при необходимости
++ *_ВАЖНО:_* Внесите необходимые изменения в файл `site/js/globals.js`
 + В конфигурационном файле `app/config/web_config.ini` в секции `[db:pttt_sg]` указать пароль (пункт `password`).
   Пароль должен совпадать с паролем, указанным для CLI-приложений (см. `app/config/cli_config.ini` в секции
   `[db:pttt_sg]` пункт `password`).
++ *_ВАЖНО:_* Так же необходимо убедиться в корректности пути к каталогу для лог-файла. По умолчанию приложение
+  пишет логи в каталог `logs/`. Если по каким-то причинам необходимо задать другой каталог, то в кофигурационных
+  файлах `app/config/web_config.ini` и `app/config/cli_config.ini`в секции `[logger]` определить путь с
+  помощью параметра `filename`
