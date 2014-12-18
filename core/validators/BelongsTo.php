@@ -54,7 +54,7 @@ class BelongsTo extends Validator
         return ($this->db->getEntry(
             $this->table_name,
             [$this->referenced_to => $this->property->preparedForDb()]
-        )->row());
+        ));
     }
 
     /**
