@@ -15,6 +15,7 @@ namespace core\validators;
 
 
 use core\generic\DbDriver;
+use core\generic\Property;
 use core\generic\Validator;
 
 class IsUnique extends Validator
@@ -30,14 +31,21 @@ class IsUnique extends Validator
     protected $table_name;
 
     /**
+     * @var
+     */
+    protected $id;
+
+    /**
      * @param DbDriver $db
      * @param string $table_name
+     * @param Property $id
      */
-    public function __construct(DbDriver $db, $table_name)
+    public function __construct(DbDriver $db, $table_name, Property $id)
     {
         parent::__construct();
         $this->db = $db;
         $this->table_name = $table_name;
+        $this->id = $id;
     }
 
     /**
@@ -45,10 +53,15 @@ class IsUnique extends Validator
      */
     public function isValid()
     {
-        return (!$this->db->getEntry(
-            $this->table_name,
-            [$this->property->name() => $this->property->preparedForDb()]
-        ));
+        $params = [];
+        $sql = 'SELECT ' . '*' .' FROM ' . $this->table_name
+            . ' WHERE ' . $this->property->name() . ' = ?';
+        $params[] = $this->property->get();
+        if (!$this->id->isEmpty()) {
+            $sql .= ' AND ' . $this->id->name() . ' <> ?';
+            $params[] = $this->id->get();
+        }
+        return !$this->db->query($sql, $params)->row();
     }
 
     /**
