@@ -9,6 +9,7 @@
 namespace app\web;
 
 use app\models\Product;
+use app\models\User;
 use core\App;
 use core\Utils;
 use core\View;
@@ -52,6 +53,9 @@ class Purchase extends SecuredGenericController
 
     public function all()
     {
+        if ($this->role() != User::ROLE_ADMIN) {
+            $this->http()->forbidden();
+        }
         $purchase = new \app\models\Purchase();
         App::view('purchase\all', [
             'title' => 'Все покупки',
