@@ -37,7 +37,7 @@ class User extends Model
 
         $this->property('username', 'String')
             ->title('Логин')
-            ->validator(new IsUnique($this->db, $this->getTableName()));
+            ->validator(new IsUnique($this->db, $this->getTableName(), $this->id));
 
         $this->property('password', 'Password')->title('Пароль')->validator(new IsRequired());
         $this->property('confirm_password', 'String')->title('Подтверждение пароля')->readOnly();
@@ -48,11 +48,27 @@ class User extends Model
             ->validator(new Range(self::ROLE_ADMIN, self::ROLE_CUSTOMER));
     }
 
+    /**
+     * @param string $username
+     * @param string $password
+     */
+    public function authVerify($username, $password)
+    {
+        $row = $this->db->query(
+            "SELECT * FROM {$this->getTableName()} WHERE username = ? ", [$username]
+        )->row();
+        if ($row) {
+            $this->deployFromRow($row);
+            $this->username->set($username);
+            return ($row->password === Password::crypt($password, $this->createSalt()));
+        }
+        return false;
+    }
+
     protected function beforeCreate()
     {
         if (parent::beforeCreate()) {
-            $this->password->setSalt($this->createSalt());
-            $this->password->set(Password::crypt($this->password->get(), $this->password->getSalt()));
+            $this->password->set(Password::crypt($this->password->get(), $this->createSalt()));
             return true;
         }
         return false;

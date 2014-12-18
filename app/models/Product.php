@@ -10,6 +10,7 @@ namespace app\models;
 
 
 use core\generic\Model;
+use core\validators\IsRequired;
 use core\validators\IsUnique;
 use core\validators\MoreOrEqual;
 use core\validators\MoreThen;
@@ -33,7 +34,8 @@ class Product extends Model
 
         $this->property('name', 'String')
             ->title('Наименование')
-            ->validator(new IsUnique($this->db, $this->getTableName()));
+            ->validator(new IsRequired())
+            ->validator(new IsUnique($this->db, $this->getTableName(), $this->id));
 
         $this->property('description', 'String')
             ->title('Описание')
@@ -44,7 +46,8 @@ class Product extends Model
             ->validator(new MoreThen(0));
 
         $this->property('quantity', 'Integer')
-            ->title('Количество')
+            ->title('Остаток')
+            ->validator(new IsRequired())
             ->validator(new MoreOrEqual(0));
     }
 }
