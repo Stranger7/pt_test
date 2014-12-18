@@ -42,6 +42,7 @@ class db extends Controller
         $this->createTableUsers();
         $this->createTableProducts();
         $this->createTablePurchase();
+        $this->createTableSessions();
     }
 
     public function drop($my_root, $password)
@@ -144,4 +145,21 @@ SQL;
         $this->db->query($sql);
         echo "Table 'purchase' created" . PHP_EOL;
     }
+
+    private function createTableSessions()
+    {
+        $sql =<<< SQL
+CREATE TABLE sessions (
+  id VARCHAR(32) NOT NULL,
+  created DATETIME NOT NULL,
+  updated DATETIME NOT NULL,
+  data text,
+  ip_address text,
+  user_agent text,
+  PRIMARY KEY (id)
+)
+SQL;
+        $this->db->query($sql);
+        echo "Table 'sessions' created" . PHP_EOL;
+   }
 }
